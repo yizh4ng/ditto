@@ -47,7 +47,6 @@ class Polygon_generator(Shape_generator):
     h = np.random.uniform(self.height_range[0], self.height_range[1])
     self.counter += 1
     return Polygon(polygon, h, mask)
-    return Shape(mask * h)
 
 
 
