@@ -11,7 +11,8 @@ numpy, matplotlib, opencv, scipy
 lambo is optional for visualiation
 
 # demo
-```from ditto import Painter
+```
+from ditto import Painter
 
 from ditto import Config
 
@@ -20,4 +21,11 @@ p = Painter(**Config)
 p.paint_samples()
 ```
 
-Ground truths and fringes can be extracted from p.ground_truth and p.fringes
+Ground truths and fringes can be extracted from p.ground_truth and p.fringes.
+
+# todo
+
+Zernike polynomial abberation.
+
+For video geneation, when most of shapes move out of the field of view, generate new shapes.
+
