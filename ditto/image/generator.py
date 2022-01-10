@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 
 from ditto.image.fringeencoder import FringeEncoder
 from ditto.image.interferogram import Interferogram
-from lambo.gui.vinci.vinci import DaVinci
 from ditto.image.config import Config
 from scipy.signal import convolve2d
 from ditto.shape_generator import shape_dict
@@ -51,6 +50,7 @@ class Painter(FringeEncoder):
 
 
 if __name__ == '__main__':
+  from lambo.gui.vinci.vinci import DaVinci
   p = Painter(**Config)
   p.paint_samples()
   da = DaVinci()

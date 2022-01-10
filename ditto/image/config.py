@@ -22,8 +22,8 @@ from ditto.shape_generator import polygon_generator
 
 
 Config = {'img_size':(200,200),
-          'radius_range': (25, 30),
-          'uncentral_range' : ((70, 71), (45, 125)),
+          'radius_range': (30, 31),
+          'uncentral_range' : ((60, 61), (60, 61)),
           'suffle': True,
           'smooth':0,
           'draw_over': True,

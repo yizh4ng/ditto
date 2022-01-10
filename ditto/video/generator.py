@@ -1,12 +1,11 @@
 from ditto import Painter
-from lambo.gui.vinci.vinci import DaVinci
 import numpy as np
 
 from ditto.image.config import Config as ImageConfig
 from ditto.video.config import Config as VideoConfig
 from scipy.signal import convolve2d
 
-class Video_generator():
+class VideoGenerator():
   def __init__(self, video_length, move_range, rotate_range):
     self.painter = Painter(**ImageConfig)
     self.img_config = ImageConfig
@@ -47,12 +46,15 @@ class Video_generator():
       self.step()
 
 if __name__ == '__main__':
-  vg = Video_generator(**VideoConfig)
+
+  from lambo.gui.vinci.vinci import DaVinci
+
+  vg = VideoGenerator(**VideoConfig)
 
   vg.generate()
 
   da = DaVinci()
-  da.objects = vg.fringe_stack
-  # da.objects = vg.img_stack
+  # da.objects = vg.fringe_stack
+  da.objects = vg.img_stack
   da.add_plotter(da.imshow)
   da.show()
