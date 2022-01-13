@@ -3,8 +3,8 @@ import numpy as np
 
 from ditto.shape_generator.shape import Shape
 class Polygon(Shape):
-  def __init__(self, polygon, h, mask):
-    super(Polygon, self).__init__(mask)
+  def __init__(self, polygon, h):
+    super(Polygon, self).__init__()
     self.polygon = polygon
     self.h = h
     self.angle = 0

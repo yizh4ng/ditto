@@ -1,7 +1,7 @@
 import numpy as np
 class Shape():
-  def __init__(self, mask):
-    self.mask = mask
+  def __init__(self):
+    self.mask = None
 
   def move(self, offset):
     W, H = self.mask.shape[0], self.mask.shape[1]
