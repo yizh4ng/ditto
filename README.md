@@ -13,11 +13,9 @@ lambo is optional for visualiation
 # demo
 To generate a single image and its interferogram:
 ```
-from ditto import Painter
+from ditto import Painter, ImageConfig
 
-from ditto import Config
-
-p = Painter(**Config)
+p = Painter(**ImageConfig)
 
 p.paint_samples()
 ```
@@ -26,12 +24,16 @@ Ground truths and fringes can be extracted from p.ground_truth and p.fringes.
 
 To generate a video of images and their interferograms:
 ```
- vg = VideoGenerator(**VideoConfig)
+from ditto import ImageConfig, VideoConfig, VideoGenerator
 
-  vg.generate()
+vg = VideoGenerator(ImageConfig, **VideoConfig)
+
+vg.generate()
 ```
 
-Then the grounds truthes and fringes stack can be extracted from vg.img_stack and vg.fringe_stack
+Then the grounds truthes and fringes stack can be extracted from vg.img_stack and vg.fringe_stack.
+
+Note that the video generator will automatically use the image config.
 
 # todo
 
