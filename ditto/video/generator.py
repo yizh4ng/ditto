@@ -6,18 +6,18 @@ from ditto.video.config import Config as VideoConfig
 from scipy.signal import convolve2d
 
 class VideoGenerator():
-  def __init__(self, ImageConfig, video_length, move_range, rotate_range):
-    self.painter = Painter(**ImageConfig)
+  def __init__(self, ImageConfig, VideoConfig):
+    self.painter = Painter(ImageConfig)
     self.img_config = ImageConfig
     self.img_size = self.painter.img.shape
-    self.video_length = video_length
+    self.video_length = VideoConfig['video_length']
     self.painter.paint_samples()
     self.first_frame = self.painter.img
     self.img_stack = [self.first_frame]
     self.fringe_stack = [self.painter.extracted_fringe]
     self.shapes = self.painter.shapes
-    self.move_range = move_range
-    self.rotate_range = rotate_range
+    self.move_range = VideoConfig['move_range']
+    self.rotate_range = VideoConfig['rotate_range']
     self.back_ground = np.zeros(self.img_size)
     for key in self.img_config.keys():
       if key in abberation_dict.keys():
@@ -55,18 +55,18 @@ class VideoGenerator():
 if __name__ == '__main__':
 
   # from lambo.gui.vinci.vinci import DaVinci
-  from lambo.gui.vincv import DaVincv
+  from lambo.gui.vincv.davincv import DaVincv
   import datetime
   starttime = datetime.datetime.now()
   from ditto import ImageConfig, VideoConfig, VideoGenerator
-  vg = VideoGenerator(ImageConfig, **VideoConfig)
+  vg = VideoGenerator(ImageConfig, VideoConfig)
 
   vg.generate()
 
   endtime = datetime.datetime.now()
   print((endtime - starttime).seconds)
   da = DaVincv()
-  # da.objects = vg.fringe_stack
-  da.objects = (vg.img_stack)
+  da.objects = vg.fringe_stack
+  # da.objects = (vg.img_stack)
   da.add_plotter(da.imshow)
   da.show()

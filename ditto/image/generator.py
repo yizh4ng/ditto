@@ -13,10 +13,11 @@ from ditto.shape_generator import shape_dict
 from ditto.aberration_generator import abberation_dict
 
 class Painter(FringeEncoder):
-  def __init__(self, img_size, **kwargs):
+  def __init__(self, conifg):
+    self.config = conifg
+    img_size = self.config['img_size']
     img = np.zeros((img_size[0], img_size[1]))
-    self.config = kwargs
-    super(Painter, self).__init__(img, **kwargs)
+    super(Painter, self).__init__(img, self.config)
 
   def paint_samples(self, refresh=True):
     if refresh:
@@ -53,7 +54,7 @@ if __name__ == '__main__':
   from lambo.gui.vinci.vinci import DaVinci
   from lambo.gui.vincv.davincv import DaVincv
   from ditto import Painter, ImageConfig
-  p = Painter(**ImageConfig)
+  p = Painter(ImageConfig)
   p.paint_samples()
   da = DaVincv()
   da.objects = [p.ground_truth, p.img,

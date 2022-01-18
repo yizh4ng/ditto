@@ -7,12 +7,12 @@ from ditto.image.image import DigitalImage
 
 class FringeEncoder(DigitalImage):
 
-  def __init__(self, img: np.ndarray, radius_range=(80, 81), uncentral_range=((120,121), (120, 121)), **kwargs):
+  def __init__(self, img: np.ndarray, config, **kwargs):
     super(FringeEncoder, self).__init__(img, **kwargs)
     # self.radius = radius
     # self.uncentral = uncentral
-    self.radius_range = radius_range
-    self.uncentral_range = uncentral_range
+    self.radius_range = config['radius_range']
+    self.uncentral_range = config['uncentral_range']
   # region: Properties
 
   @property
