@@ -51,9 +51,11 @@ class Painter(FringeEncoder):
 
 if __name__ == '__main__':
   from lambo.gui.vinci.vinci import DaVinci
-  p = Painter(**Config)
+  from lambo.gui.vincv.davincv import DaVincv
+  from ditto import Painter, ImageConfig
+  p = Painter(**ImageConfig)
   p.paint_samples()
-  da = DaVinci()
+  da = DaVincv()
   da.objects = [p.ground_truth, p.img,
                 np.log(np.abs(p.F) + 1),
                 np.log(np.abs(p.masked) + 1),
@@ -62,24 +64,5 @@ if __name__ == '__main__':
   da.add_plotter(da.imshow)
   da.show()
 
-  ig = Interferogram(img=-p.extracted_fringe, radius=30)
+  ig = Interferogram(img=p.extracted_fringe, radius=80)
   ig.dashow()
-  # p.paint_samples()
-  # da = DaVinci()
-  # da.objects = [p.img,
-  #               np.log(np.abs(p.F) + 1),
-  #               p.mask,
-  #               np.log(np.abs(p.uncentralized_signal) + 1),
-  #               p.extracted_fringe]
-  # da.add_plotter(da.imshow)
-  # da.show()
-  # p = Painter(**Config)
-  # p.paint_samples()
-  # da = DaVinci()
-  # da.objects = [p.img,
-  #               np.log(np.abs(p.F) + 1),
-  #               p.mask,
-  #               np.log(np.abs(p.uncentralized_signal) + 1),
-  #               p.extracted_fringe]
-  # da.add_plotter(da.imshow)
-  # da.show()
