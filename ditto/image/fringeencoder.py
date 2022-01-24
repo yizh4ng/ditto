@@ -11,6 +11,7 @@ class FringeEncoder(DigitalImage):
     super(FringeEncoder, self).__init__(img, **kwargs)
     # self.radius = radius
     # self.uncentral = uncentral
+    self.config = config
     self.radius_range = config['radius_range']
     self.uncentral_range = config['uncentral_range']
   # region: Properties
@@ -69,3 +70,58 @@ class FringeEncoder(DigitalImage):
 
   def save(self, path):
     cv2.imwrite(path, self.extracted_fringe)
+
+  @property
+  def physics_based_fringe(self):
+    W, H = self.img.shape[0], self.img.shape[1]
+    img = np.expand_dims(self.img, axis=-1)
+    i_coords, j_coords = np.meshgrid(range(W), range(H), indexing='ij')
+    i_coords = np.expand_dims(i_coords,axis=-1)
+    j_coords = np.expand_dims(j_coords,axis=-1)
+    img_3d = np.concatenate((i_coords, j_coords, img), axis=-1)
+
+    source_light_pos = self.config['source_light_pos']
+    ref_source_pos = self.config['ref_light_pos']
+
+    distance = img_3d - np.array(source_light_pos)
+    distance_ref = img_3d - np.array(ref_source_pos)
+
+    distance_difference = distance + distance_ref
+    phase_difference = np.sqrt(np.sum(np.square(distance_difference), axis=-1))
+    return np.cos(self.config['frequency'] * phase_difference)
+
+
+if __name__ == '__main__':
+  Config = {'img_size': (512, 512),
+            'radius_range': (50, 51),
+            'uncentral_range': ((60, 61), (60, 61)),
+            'source_light_pos': (0, 0, 100),
+            'ref_light_pos': (100, 100, 50),
+            'suffle': True,
+            'smooth': 2,
+            'draw_over': False,
+            # 'tilt_abberation': {'slop_direction':(0,1),
+            #                     'slop':0.01,
+            #                     'lowest_height': 0},
+            # 'Square':{'radius_range': (0.3, 0.3),
+            #             'num_range': (1, 2),
+            #             'num_point_range':(4, 6),
+            #             'height_range': (0, 1),
+            #             'random_rotate': True},
+            'Ellipse': {'radius_range': (0.1, 0.2),
+                        'long_axis_range': (1.0, 1.1),
+                        'short_axis_range': (0.9, 1.0),
+                        'num_range': (4, 5),
+                        'height_range': (5, 10),
+                        'random_rotate': True
+                        },
+            # 'Polygon': {'radius_range': (0.2, 0.2),
+            #             'num_range': (4, 5),
+            #             'num_point_range':(3, 4),
+            #             'height_range': (5, 10),
+            #             'random_rotate': True,
+            #             'irregular': False},
+            }
+  fe= FringeEncoder(np.array([[1,2], [3,4]]), config=Config)
+  fe = fe.physics_based_fringe
+

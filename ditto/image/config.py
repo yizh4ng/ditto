@@ -2,9 +2,12 @@ from ditto.shape_generator import polygon_generator
 
 
 
-Config = {'img_size':(500, 500),
+Config = {'img_size':(512, 512),
           'radius_range': (50, 51),
           'uncentral_range' : ((60, 61), (60, 61)),
+          'source_light_pos':(0,0,1000000),
+          'ref_light_pos':(1000000,1000000,1000000),
+          'frequency':10,
           'suffle': True,
           'smooth':2,
           'draw_over': False,
@@ -20,7 +23,7 @@ Config = {'img_size':(500, 500),
                      'long_axis_range':(1.0, 1.1),
                      'short_axis_range': (0.9, 1.0),
                      'num_range':(4, 5),
-                     'height_range':(5, 10),
+                     'height_range':(0.5, 1),
                      'random_rotate':True
                     },
           # 'Polygon': {'radius_range': (0.2, 0.2),
