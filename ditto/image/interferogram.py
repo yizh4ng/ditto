@@ -120,6 +120,31 @@ class Interferogram(DigitalImage):
     return self.get_from_pocket('mask_of_+1_point', initializer=_get_mask)
 
   @property
+  def mask_dual(self) -> np.ndarray:
+    def _get_mask_():
+      CI, CJ = [s % 2 for s in self.Fc.shape]
+      mask_dual = np.rot90(self.mask, 2)
+      mask_dual = np.roll(mask_dual, shift=((CI + 1) % 2, (CJ + 1) % 2), axis=(0, 1))
+      return mask_dual
+    return self.get_from_pocket('mask_of_-1_point', initializer=_get_mask_)
+
+  @property
+  def high_frequency_filter(self):
+    def _hff():
+      mask = np.logical_or(self.mask_dual, self.mask)
+      masked = self.Fc * mask
+      return np.real(np.fft.ifft2(np.fft.ifftshift(masked)))
+    return self.get_from_pocket('high_frequency_filter', initializer=_hff)
+
+  @property
+  def low_frequency_filter(self):
+    def _lff():
+      mask = np.logical_or(self.mask, self.mask_dual)
+      masked = self.Fc * np.logical_not(mask)
+      return np.real(np.fft.ifft2(np.fft.ifftshift(masked)))
+    return self.get_from_pocket('low_frequency_filter', initializer=_lff)
+
+  @property
   def homing_signal(self) -> np.ndarray:
     def _homing_signal():
       masked = self.Fc * self.mask

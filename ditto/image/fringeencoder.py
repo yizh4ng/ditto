@@ -1,19 +1,22 @@
 import cv2
 import numpy as np
 
+from ditto.image.interferogram import Interferogram
 from roma import Nomear
 from ditto.image.image import DigitalImage
 
 
 class FringeEncoder(DigitalImage):
 
-  def __init__(self, img: np.ndarray, config, **kwargs):
+  def __init__(self, img: np.ndarray, config, abberation_image=None, **kwargs):
     super(FringeEncoder, self).__init__(img, **kwargs)
     # self.radius = radius
     # self.uncentral = uncentral
     self.config = config
     self.radius_range = config['radius_range']
     self.uncentral_range = config['uncentral_range']
+    self.abberation_image = abberation_image
+    self.bg_ig = None
   # region: Properties
 
   @property
@@ -81,14 +84,82 @@ class FringeEncoder(DigitalImage):
     img_3d = np.concatenate((i_coords, j_coords, img), axis=-1)
 
     source_light_pos = self.config['source_light_pos']
-    ref_source_pos = self.config['ref_light_pos']
+    # ref_source_pos = self.config['ref_light_pos']
+    ref_offset = self.config['ref_light_offset']
+    ref_angle = self.config['ref_light_angle']
+    if isinstance(ref_angle, tuple):
+      ref_angle = np.random.uniform(*ref_angle)
+    ref_height = self.config['ref_light_height']
+    ref_source_pos = (ref_offset* np.cos(ref_angle),
+                      ref_offset* np.sin(ref_angle), ref_height)
 
     distance = img_3d - np.array(source_light_pos)
     distance_ref = img_3d - np.array(ref_source_pos)
 
     distance_difference = distance + distance_ref
     phase_difference = np.sqrt(np.sum(np.square(distance_difference), axis=-1))
-    return np.cos(self.config['frequency'] * phase_difference)
+    phase_difference_ = np.copy(phase_difference)
+
+    if self.config['frequency'][0] == self.config['frequency'][1]:
+      frequency = self.config['frequency'][0]
+    else:
+      frequency = np.random.uniform(self.config['frequency'][0],
+                                    self.config['frequency'][1])
+
+    if self.config['first_phase'][0] == self.config['first_phase'][1]:
+      first_phase = self.config['first_phase'][0]
+    else:
+      first_phase = np.random.uniform(self.config['first_phase'][0],
+                                      self.config['first_phase'][1])
+
+    if self.abberation_image is not None:
+      if self.bg_ig is None:
+        self.bg_ig = Interferogram(self.abberation_image,
+                                 radius=200)
+      # self.img += self.bg_ig.extracted_angle_unwrapped
+      abberation = self.bg_ig.low_frequency_filter
+      high_frequency = self.bg_ig.high_frequency_filter
+      beta = np.max(np.real(self.bg_ig.high_frequency_filter))
+      index = np.unravel_index(np.argmax(high_frequency), high_frequency.shape)
+      alpha =  abberation[index]
+
+      offset = (alpha - np.sqrt(alpha ** 2 - beta ** 2)) / 2
+      # print(np.min(abberation))
+      phase_difference -= self.bg_ig.extracted_angle_unwrapped
+      phase_difference += np.random.normal(0, 0.01, (W, H))
+
+      phase_map = np.cos(frequency * phase_difference + first_phase)
+      if self.config['with_abberation']:
+        # light_attenuation = 1/(1 + 0.000001 * phase_difference_)
+        abberation_correct = abberation-offset
+        abberation_correct[abberation_correct<0] = 0
+        def stretch(array):
+          mean = np.mean(array)
+          array -= mean
+          max = np.max(np.abs(array))
+          array = array / max
+          print(np.mean(array), np.max(np.abs(array)))
+          array = (1/ (1 + np.exp(-2.5 * array))) - 0.5
+          print(np.mean(array), np.max(np.abs(array)))
+          array *= max
+          array += mean
+          return array
+        phase_map =   abberation + 2 * np.sqrt((abberation_correct) * offset) *  phase_map
+      # phase_map += np.random.normal(0, 5, (W, H))
+      # phase_map = cv2.equalizeHist(phase_map.astype(np.uint8))
+    else:
+      phase_map = np.cos(frequency * phase_difference + first_phase)
+
+    if self.config['normalize']:
+      phase_map -= np.min(phase_map)
+      phase_map = phase_map / np.max(phase_map)
+    if self.config['binary']:
+      mean = np.mean(phase_map)
+      zero_indices = phase_map <= mean
+      one_indices = phase_map > mean
+      phase_map[zero_indices] = 0
+      phase_map[one_indices] = 1
+    return phase_map
 
 
 if __name__ == '__main__':

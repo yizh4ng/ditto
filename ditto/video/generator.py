@@ -14,7 +14,7 @@ class VideoGenerator():
     self.painter.paint_samples()
     self.first_frame = self.painter.img
     self.img_stack = [self.first_frame]
-    self.fringe_stack = [self.painter.extracted_fringe]
+    self.fringe_stack = [self.painter.physics_based_fringe]
     self.shapes = self.painter.shapes
     self.move_range = VideoConfig['move_range']
     self.rotate_range = VideoConfig['rotate_range']
@@ -46,7 +46,7 @@ class VideoGenerator():
 
     self.painter.img = img
     self.img_stack.append(ground_turth)
-    self.fringe_stack.append(self.painter.extracted_fringe)
+    self.fringe_stack.append(self.painter.physics_based_fringe)
 
   def generate(self):
     for _ in range(self.video_length - 1):
