@@ -55,7 +55,7 @@ class VideoGenerator():
 if __name__ == '__main__':
 
   # from lambo.gui.vinci.vinci import DaVinci
-  from lambo.gui.vincv.davincv import DaVincv
+  from lambo.gui.vinci.vinci import DaVinci
   import datetime
   starttime = datetime.datetime.now()
   from ditto import ImageConfig, VideoConfig, VideoGenerator
@@ -65,8 +65,8 @@ if __name__ == '__main__':
 
   endtime = datetime.datetime.now()
   print((endtime - starttime).seconds)
-  da = DaVincv()
-  da.objects = vg.fringe_stack
-  # da.objects = (vg.img_stack)
+  da = DaVinci()
+  # da.objects = vg.fringe_stack
+  da.objects = (vg.img_stack)
   da.add_plotter(da.imshow)
   da.show()

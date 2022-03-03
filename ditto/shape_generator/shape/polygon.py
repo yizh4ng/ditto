@@ -28,13 +28,19 @@ class Polygon(Shape):
     polygon = np.transpose(polygon)
     return polygon
 
-  def draw(self, img:np.ndarray, draw_over=True):
+  def _get_mask(self, img):
     mask = np.zeros(img.shape)
     cv2.drawContours(mask, [self.get_global_polygon_pos()], 0, 1, -1)
-    self.mask = mask * self.h
-    if draw_over:
-      img = img * (self.mask == 0) + self.mask
-    else:
-      img += self.mask
-    assert isinstance(img, np.ndarray)
-    return img
+    mask = mask * self.h
+    return mask
+
+  # def draw(self, img:np.ndarray, draw_over=True):
+  #   mask = np.zeros(img.shape)
+  #   cv2.drawContours(mask, [self.get_global_polygon_pos()], 0, 1, -1)
+  #   self.mask = mask * self.h
+  #   if draw_over:
+  #     img = img * (self.mask == 0) + self.mask
+  #   else:
+  #     img += self.mask
+  #   assert isinstance(img, np.ndarray)
+  #   return img

@@ -20,15 +20,17 @@ class Ellipse_generator(Shape_generator):
     r = np.random.uniform(self.radius_range[0] * W, self.radius_range[1] * W)
     long_axis = np.random.uniform(self.long_axis[0], self.long_axis[1])
     short_axis = np.random.uniform(self.short_axis[0], self.short_axis[1])
-    c_w = np.random.randint(long_axis * r, W - long_axis * r)
-    c_h = np.random.randint(long_axis * r, W - long_axis * r)
+    # c_w = np.random.randint(long_axis * r, W - long_axis * r)
+    # c_h = np.random.randint(long_axis * r, W - long_axis * r)
+    c_w = np.random.randint(0, W)
+    c_h = np.random.randint(0, H)
 
     angle=0
     if self.random_rotate:
       angle = np.random.randint(0, 360)
 
-    h = np.random.uniform(self.height_range[0], self.height_range[1])
-
+    # h = np.random.uniform(self.height_range[0], self.height_range[1])
+    h = self.get_random_height()
     self.counter += 1
     return Ellipse(np.array([c_w,c_h]), np.array([long_axis * r, short_axis* r]),
                    angle, h)

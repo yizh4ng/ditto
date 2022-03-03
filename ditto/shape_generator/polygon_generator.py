@@ -34,7 +34,7 @@ class Polygon_generator(Shape_generator):
     for i in range(num_points):
       angle = theta
       if self.irregular:
-        angle += np.random.randint(0, int(delta)) - 1
+        angle += np.random.uniform(0, delta)
       polygon.append(np.array([c_w, c_h]) + np.dot(rotation_matrix(angle),
                      [np.random.uniform(min_radius, max_radius), 0]))
       theta += delta
@@ -44,7 +44,7 @@ class Polygon_generator(Shape_generator):
     mask = np.zeros((W, H))
     cv2.drawContours(mask, [polygon], 0, 1, -1)
 
-    h = np.random.uniform(self.height_range[0], self.height_range[1])
+    h = self.get_random_height()
     self.counter += 1
     return Polygon(polygon, h)
 
