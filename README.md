@@ -10,6 +10,7 @@ This package can encode the images and video in fringes.
 
 # Update
 Support textures embedding on the generated shapes.
+![ground-truth-Train Set-0](https://user-images.githubusercontent.com/50898990/161478543-185ca573-c05f-449e-a206-308efe947ec9.png)
 
 # Dependency
 numpy, matplotlib, opencv, scipy
