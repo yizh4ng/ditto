@@ -5,6 +5,9 @@ This package also supports video generation, where the shapes can move and rotat
 
 This package can encode the images and video in fringes.
 
+![Ditto](https://user-images.githubusercontent.com/50898990/161477872-8ec8b8e6-cd86-4264-8922-63e4a6a7b224.png)
+
+
 # Update
 Support textures embedding on the generated shapes.
 
