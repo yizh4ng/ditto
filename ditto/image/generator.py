@@ -84,8 +84,8 @@ if __name__ == '__main__':
   da.add_plotter(da.imshow)
   da.show()
 
-  # ig = Interferogram(img=fringe, radius=120)
-  # ig.dashow()
+  ig = Interferogram(img=fringe, radius=120)
+  ig.dashow()
   ''''Following codes are for testing whether the backgrounds matter'''
   # def binary(phase_map):
   #   mean = np.mean(phase_map)

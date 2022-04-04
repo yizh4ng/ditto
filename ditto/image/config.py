@@ -2,24 +2,28 @@ from ditto.shape_generator import polygon_generator
 import numpy as np
 
 
-Config = {'img_size':(1024, 1280),
+Config = {#'img_size':(1024, 1280),
+          'img_size':(2448, 2048),
           'radius_range': (50, 51),
           'uncentral_range' : ((60, 61), (60, 61)),
           'source_light_pos':(0,0,1000000),
           'ref_light_height':1000000,
           'ref_light_offset': np.sqrt(1280000 ** 2 + 2000000**2),
+          # 'ref_light_offset': np.sqrt(12 ** 2 + 20**2),
           'ref_light_angle': (-np.pi/2, 0),
           # 'ref_light_angle': np.arctan(-2000000/1280000),
           # 'first_phase': (-0.5 * np.pi, 0.5 * np.pi),
           'first_phase': (0,0),
           'frequency':(1.160, 1.2),#1.180
+          # 'frequency':(100, 100),#1.180
           'suffle': True,
-          'smooth':3,
+          'smooth':0,
           'draw_over': False,
           'with_abberation': False,
           'positive_image':True,
           'normalize': False,
           'binary':True,
+          # 'binary':False,
           # 'tilt_abberation': {'slop_direction':(0,1),
           #                     'slop':0.01,
           #                     'lowest_height': 0},
