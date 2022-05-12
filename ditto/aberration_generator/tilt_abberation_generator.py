@@ -1,4 +1,4 @@
-from ditto.aberration_generator.abberation_generator import AbberationGenerator
+from ditto.aberration_generator.aberration_generator import AbberationGenerator
 import numpy as np
 
 

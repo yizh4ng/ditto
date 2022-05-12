@@ -55,7 +55,7 @@ class Painter(FringeEncoder):
 
     for key in self.config.keys():
       if key in abberation_dict.keys():
-        self.img = abberation_dict[key](*self.config[key].values()).generate(self.img)
+        self.img = abberation_dict[key](self.config).generate(self.img)
 
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-from abberation_generator import AbberationGenerator
+from aberration_generator import AbberationGenerator
 
 
 
