@@ -6,7 +6,6 @@ from scipy.spatial.transform import Rotation as R
 
 class QuadraticAberrationGenerator(AbberationGenerator):
   def __init__(self, config):
-    print(list(config.keys()))
     if 'quadratic_aberration' in list(config.keys()):
       self.config = config['quadratic_aberration']
     else:
