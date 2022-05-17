@@ -62,6 +62,6 @@ Visualize
 da = DaVinci()
 da.objects = [fringe,  ifg_phase,
               ifg_fft_real, ifg_fft_imag,
-              ifg_fft_real_new, ifg_fft_imag_new]
+              ifg_fft_real_new, ifg_fft_imag_new, np.angle(ifg_fft_new)]
 da.add_plotter(da.imshow)
 da.show()

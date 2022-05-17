@@ -113,12 +113,9 @@ class FringeEncoder(DigitalImage):
                                       self.config['first_phase'][1])
 
     if self.abberation_image is not None:
-      if self.bg_ig is None:
-        self.bg_ig = Interferogram(self.abberation_image,
+      self.bg_ig = Interferogram(self.abberation_image,
                                  radius=200)
-      # self.img += self.bg_ig.extracted_angle_unwrapped
-      # print(np.min(abberation))
-      phase_difference -= self.bg_ig.extracted_angle_unwrapped
+      phase_difference += self.bg_ig.extracted_angle_unwrapped
 
       phase_map = np.cos(frequency * phase_difference + first_phase)
       if self.config['with_abberation']:
@@ -133,20 +130,8 @@ class FringeEncoder(DigitalImage):
         offset = (alpha - np.sqrt(alpha ** 2 - beta ** 2)) / 2
         abberation_correct = abberation-offset
         abberation_correct[abberation_correct<0] = 0
-        def stretch(array):
-          mean = np.mean(array)
-          array -= mean
-          max = np.max(np.abs(array))
-          array = array / max
-          print(np.mean(array), np.max(np.abs(array)))
-          array = (1/ (1 + np.exp(-2.5 * array))) - 0.5
-          print(np.mean(array), np.max(np.abs(array)))
-          array *= max
-          array += mean
-          return array
         phase_map =   abberation + 2 * np.sqrt((abberation_correct) * offset) *  phase_map
-      # phase_map += np.random.normal(0, 5, (W, H))
-      # phase_map = cv2.equalizeHist(phase_map.astype(np.uint8))
+      self.bg_ig.release()
     else:
       phase_map = np.cos(frequency * phase_difference + first_phase)
 
