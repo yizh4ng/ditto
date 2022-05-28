@@ -35,7 +35,7 @@ class FringeSimulater(Nomear):
   def raw_ifg_low_frequency(self):
     def _raw_ifg_low_frequency():
       peaki, peakj = peak_index = self.ifg.peak_index
-      print(peak_index)
+      # print(peak_index)
       H, W = img_size = self.ifg.img.shape
       peak_mask_1 = mask(peaki, peakj, self.radius, img_size)
       peak_mask_2 = mask(H + (H + 1) % 2 - peaki, W + (W + 1) % 2 - peakj, self.radius,

@@ -16,6 +16,7 @@ class QuadraticAberrationGenerator(AbberationGenerator):
     self.short_axis_range = self.config['short_axis_range']
 
     self.height_range = self.config['height_range']
+    self.offset_range = self.config['offset_range']
     self.radius_range = self.config['radius_range']
 
   def generate(self, img):
@@ -45,6 +46,8 @@ class QuadraticAberrationGenerator(AbberationGenerator):
       radius**2 * (H**2 + W**2) - (long_axis * (X - center_x)) ** 2
       - (short_axis *(Y - center_y)) ** 2)
     height = np.random.uniform(*self.height_range)
-    aberration /= (np.max(aberration) - np.min(aberration)) / height
+    offset = np.random.uniform(*self.offset_range)
+    aberration = (aberration - np.min(aberration)) / (np.max(aberration) - np.min(aberration)) * height + offset
+    aberration += img
 
-    return img + aberration
+    return aberration
