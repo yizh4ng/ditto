@@ -18,7 +18,7 @@ class Polygon_generator(Shape_generator):
     self.irregular = irregular
 
   def generate_one(self, img:np.array):
-    H, W = img.shape[1], img.shape[0]
+    H, W = img.shape[0], img.shape[1]
     min_radius = self.radius_range[0] * min(W, H)
     max_radius = self.radius_range[1] * max((W, H))
     c_w = np.random.randint(max_radius, W - max_radius)

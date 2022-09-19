@@ -9,10 +9,14 @@ class Shape_generator():
     self.height_range = None
     pass
 
-  def get_random_height(self):
+  def get_random_value(self, intervals):
     height_candidates = []
-    for interval in self.height_range:
-      height_candidates.append(np.random.uniform(*interval))
+    for interval in intervals:
+      assert len(interval) == 2
+      if interval[0] == interval[1]:
+        height_candidates.append(interval[0])
+      else:
+        height_candidates.append(np.random.uniform(*interval))
 
     random_choise = np.random.randint(0, len(height_candidates))
 

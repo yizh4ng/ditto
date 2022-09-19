@@ -73,13 +73,17 @@ Visualize
 '''
 da = DaVinci()
 da.objects = [fringe,
-              ifg.extracted_angle_unwrapped, ifg_phase,
-              ifg.extracted_angle,
-              ifg_fft_imag, ifg_fft_real,
+              ifg.extracted_angle_unwrapped,
+              # ifg_phase,
+              # ifg.extracted_angle,
+              # ifg_fft_imag, ifg_fft_real,
               # np.real(ifg_fft), ifg_fft_real, ifg_fft_imag, unwrap_phase(np.angle(ifg_fft_real + 1j * ifg_fft_imag)),
+              np.real(ifg_fft), np.imag(ifg_fft), ifg_fft_real, ifg_fft_imag,
               ifg_fft_real_new, ifg_fft_imag_new,
-              ifg_phase_with_simulated_aber,
-              unwrap_phase(np.angle(ifg_fft_new))]
+              # ifg_fft_real_new * ifg_fft_imag_new,
+              # ifg_phase_with_simulated_aber,
+              unwrap_phase(np.angle(ifg_fft_new))
+              ]
 da.add_plotter(da.imshow)
 da.add_plotter(da.plot3d)
 da.show()

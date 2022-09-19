@@ -13,8 +13,8 @@ class FringeEncoder(DigitalImage):
     # self.radius = radius
     # self.uncentral = uncentral
     self.config = config
-    self.radius_range = config['radius_range']
-    self.uncentral_range = config['uncentral_range']
+    # self.radius_range = config['radius_range']
+    # self.uncentral_range = config['uncentral_range']
     self.abberation_image = abberation_image
     self.bg_ig = None
   # region: Properties
@@ -31,7 +31,7 @@ class FringeEncoder(DigitalImage):
     def _get_mask():
       H, W = self.Sc.shape
       X, Y = np.ogrid[:H, :W]
-      return np.sqrt((X - H/2) ** 2 + (Y - W/2) ** 2) <= np.random.randint(*self.radius_range)
+      return np.sqrt((X - H/2) ** 2 + (Y - W/2) ** 2) <= np.random.randint(*self.config['radius_range'])
     return _get_mask()
     # return self.get_from_pocket('mask_of_+1_point', initializer=_get_mask)
 
@@ -50,8 +50,8 @@ class FringeEncoder(DigitalImage):
       masked = (self.F * self.mask)
       CI, CJ = [s % 2 for s in self.Fc.shape]
       # pi, pj = self.uncentral[0], self.uncentral[1]
-      l = np.random.randint(*self.uncentral_range[0])
-      theta = (np.random.randint(*self.uncentral_range[1]) / 360) * 2 * np.pi
+      l = np.random.randint(*self.config['uncentral_range'][0])
+      theta = (np.random.randint(*self.config['uncentral_range'][1]) / 360) * 2 * np.pi
       rotation_matrix = np.array([[np.cos(theta), -np.sin(theta)],
                                   [np.sin(theta), np.cos(theta)]])
       pos = np.dot(rotation_matrix, (l, 0))
