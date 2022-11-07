@@ -1,12 +1,16 @@
-from ditto.shape_generator import Shape_generator
+from ditto.shape_generator import BaseGenerator
 from ditto.shape_generator.shape import Shape, Ellipse
 import numpy as np
 import skimage
 
-class Ellipse_generator(Shape_generator):
+
+
+class EllipseGenerator(BaseGenerator):
+  _name = 'Ellipse'
+
   def __init__(self, radius_range, long_axis_range, short_axis_range,
                num_range, height_range, random_rotate, center, uniform_height):
-    super(Ellipse_generator, self).__init__()
+    super(EllipseGenerator, self).__init__()
     self.radius_range = radius_range
     self.long_axis = long_axis_range
     self.short_axis = short_axis_range
@@ -45,3 +49,5 @@ class Ellipse_generator(Shape_generator):
       shapes.append(self.generate_one(img))
 
     return shapes
+
+EllipseGenerator.register()

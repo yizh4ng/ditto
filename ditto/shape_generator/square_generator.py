@@ -1,7 +1,11 @@
-from ditto.shape_generator import Polygon_generator
+from ditto.shape_generator import PolygonGenerator
 import numpy as np
 
-class Square_generator(Polygon_generator):
+class SquareGenerator(PolygonGenerator):
+  _name = 'Square'
+
   def __init__(self, **kwargs):
-    super(Square_generator, self).__init__(**kwargs)
+    super(SquareGenerator, self).__init__(**kwargs)
     self.num_point_range = (4, 5)
+
+SquareGenerator.register()

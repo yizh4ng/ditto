@@ -1,7 +1,9 @@
 import cv2
 import numpy as np
-
 from ditto.shape_generator.shape import Shape
+
+
+
 class Polygon(Shape):
   def __init__(self, polygon, h):
     super(Polygon, self).__init__()

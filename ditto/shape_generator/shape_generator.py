@@ -1,15 +1,20 @@
 import numpy as np
+from ditto.shape_generator import shape_dict
 
 
-class Shape_generator():
+class BaseGenerator():
+  _name = None
 
   def __init__(self):
     self.counter = 0
     self.num = 0
     self.height_range = None
-    pass
+
 
   def get_random_value(self, intervals):
+    if not isinstance(intervals[0], list):
+      intervals = [intervals]
+
     height_candidates = []
     for interval in intervals:
       assert len(interval) == 2
@@ -30,3 +35,7 @@ class Shape_generator():
   def generate_one(self, img):
     raise NotImplementedError
     pass
+
+  @classmethod
+  def register(cls):
+    shape_dict.update({cls._name: cls})

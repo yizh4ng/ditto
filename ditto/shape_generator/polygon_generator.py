@@ -2,13 +2,15 @@ import math
 import cv2
 import numpy as np
 
-from ditto.shape_generator import Shape_generator
+from ditto.shape_generator import BaseGenerator
 from ditto.shape_generator.shape import Shape, Polygon
 
-class Polygon_generator(Shape_generator):
+class PolygonGenerator(BaseGenerator):
+  _name = 'Polygon'
+
   def __init__(self, radius_range, num_range, num_point_range, height_range, random_rotate=True,
                irregular=False):
-    super(Polygon_generator, self).__init__()
+    super(PolygonGenerator, self).__init__()
     self.radius_range = radius_range
     self.num_range = num_range
     self.height_range = height_range
@@ -56,3 +58,5 @@ class Polygon_generator(Shape_generator):
       shapes.append(self.generate_one(img))
 
     return shapes
+
+PolygonGenerator.register()
